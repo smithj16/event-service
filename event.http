@@ -1,0 +1,52 @@
+### get all events
+GET http://localhost:4002/api/events
+
+### Get event by id
+GET http://localhost:4002/api/events/a141d8fa-9919-46c0-94b9-9a5bba228504
+
+### create an event
+POST http://localhost:4002/api/events
+Content-Type: application/json
+
+{
+  "name": "Anime Central",
+  "creationDate": "2025-10-04",
+  "street": "205 Regency Dr",
+  "city": "Chicago",
+  "state": "IL",
+  "zip": "60108",
+  "country": "USA",
+  "description": "this is a temp desc",
+  "startDateTime": "2025-04-25T14:30:00",
+  "endDateTime": "2025-04-25T16:30:00",
+  "websiteUrl": "www.deeznutz.com",
+  "image": "image.jpn",
+  "attendees": 5004754,
+  "type": "CONVENTION"
+}
+### Update event by id
+PUT http://localhost:4002/api/events/c083b612-8245-4fb5-bdb0-654bfda6131d
+Content-Type: application/json
+
+{
+  "name": "Anime Central",
+  "street": "205 Regency Dr",
+  "city": "Chicago",
+  "state": "IL",
+  "zip": "60108",
+  "country": "USA",
+  "description": "this is a temp desc",
+  "startDateTime": "2025-04-25T14:30:00",
+  "endDateTime": "2025-04-25T16:30:00",
+  "websiteUrl": "www.deeznutz.com",
+  "image": "image.jpn",
+  "attendees": 5004754,
+  "type": "CONVENTION"
+}
+
+
+###delete event by id
+DELETE http://localhost:4002/api/events/a141d8fa-9919-46c0-94b9-9a5bba228504
+
+
+
