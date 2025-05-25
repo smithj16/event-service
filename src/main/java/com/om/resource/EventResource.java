@@ -3,8 +3,11 @@ package com.om.resource;
 import com.om.dto.EventRequestDTO;
 import com.om.dto.EventResponseDTO;
 import com.om.model.Event;
+import com.om.model.Image;
+import com.om.service.BucketServiceClient;
 import com.om.service.EventService;
 import com.om.validator.ValidationGroups;
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -17,8 +20,10 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
 
+import java.io.File;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +32,10 @@ import java.util.UUID;
 @Produces(MediaType.APPLICATION_JSON)
 @ApplicationScoped
 public class EventResource {
+
+    @Inject
+    @RestClient
+    BucketServiceClient bucketServiceClient;
 
     @Inject
     EventService eventService;
@@ -65,7 +74,7 @@ public class EventResource {
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Transactional
     @Operation(summary = "Create an event",
             description = "Creates an event")
@@ -74,18 +83,34 @@ public class EventResource {
                     mediaType = "application/json",
                     schema = @Schema(implementation = Event.class)
             ))
-    public RestResponse<EventResponseDTO> createEvent(@Valid @ConvertGroup(to = ValidationGroups.Create.class) EventRequestDTO newEvent) {
-        EventResponseDTO event = eventService.createEvent(newEvent);
+    public RestResponse<EventResponseDTO> createEvent(Image image, @Valid @ConvertGroup(to = ValidationGroups.Create.class) EventRequestDTO newEvent) {
 
-        if (event == null)
+        if(image.file != null && image.filename != null && image.mimetype != null) {
+            int statusCode = bucketServiceClient.uploadFile(image.file, image.filename, image.mimetype).getStatus();
+
+            if( statusCode != 200){
+                Log.error("Failed to upload file: " + image.filename);
+                return RestResponse.status(Response.Status.BAD_REQUEST);
+            }
+            newEvent.setImageKey(image.filename);
+            EventResponseDTO event = eventService.createEvent(newEvent);
+
+            if (event == null) {
+                Log.warn("Create event failed");
+                return RestResponse.status(Response.Status.BAD_REQUEST);
+            }
+
+            Log.info("Create event successful: " + event.getName());
+            return RestResponse.created(URI.create("/event/" + event.getId()));
+        }else{
+            Log.error("File is null or empty");
             return RestResponse.status(Response.Status.BAD_REQUEST);
-
-        return RestResponse.created(URI.create("/event/" + event.getId()));
+        }
     }
 
     @PUT
     @Path("{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Transactional
     @Operation(summary = "Update an event by id",
             description = "Returns updated event")

@@ -8,6 +8,7 @@ import com.om.exeception.NoEventFoundException;
 import com.om.mapper.EventMapper;
 import com.om.model.Event;
 import com.om.repository.EventRepository;
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.time.LocalDateTime;
@@ -49,6 +50,7 @@ public class EventService {
 
         Event newEvent = EventMapper.toEvent(event);
         repo.persist(newEvent);
+        Log.info("Created new event: " + newEvent);
 
         if(!repo.isPersistent(newEvent))
             return null;
@@ -74,7 +76,7 @@ public class EventService {
         updateEvent.setDescription(event.getDescription());
         updateEvent.setWebsiteUrl(event.getWebsiteUrl());
         updateEvent.setAttendees(event.getAttendees());
-        updateEvent.setImage(event.getImage());
+        updateEvent.setImageKey(event.getImageKey());
 
         repo.persist(updateEvent);
         return EventMapper.toEventResponseDTO(updateEvent);

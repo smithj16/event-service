@@ -12,7 +12,7 @@ public class EventResponseDTO {
     private String startDateTime;
     private String endDateTime;
     private String websiteUrl;
-    private String image;
+    private String imageKey;
     private long likes;
     private double rating;
     private long attendees;
@@ -106,12 +106,12 @@ public class EventResponseDTO {
         this.websiteUrl = websiteUrl;
     }
 
-    public String getImage() {
-        return image;
+    public String getImageKey() {
+        return imageKey;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageKey(String imageKey) {
+        this.imageKey = imageKey;
     }
 
     public long getLikes() {

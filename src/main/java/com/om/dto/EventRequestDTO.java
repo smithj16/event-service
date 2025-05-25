@@ -3,146 +3,76 @@ package com.om.dto;
 import com.om.validator.ValidationGroups;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.jboss.resteasy.reactive.RestForm;
 
 public class EventRequestDTO {
 
+    @RestForm
+    @NotBlank(groups = {ValidationGroups.Create.class}, message = "account_id is required")
+    private String accountId;
+
+    @RestForm
     @NotBlank(message = "name is required")
     @Size(max = 30, message = "name must be less than 30 characters")
     private String name;
 
+    @RestForm
     @NotBlank(groups = {ValidationGroups.Create.class}, message = "creation-date is required")
     private String creationDate;
 
+    @RestForm
     @NotBlank(message = "street is required")
     private String street;
 
-
+    @RestForm
     @NotBlank(message = "city is required")
     private String city;
 
+    @RestForm
     @NotBlank(message = "state is required")
     private String state;
 
+    @RestForm
     @NotBlank(message = "zip is required ")
     private String zip;
 
+    @RestForm
     @NotBlank(message = "country is required")
     private String country;
 
+    @RestForm
     @NotBlank(message = "description is required")
     @Size(max = 100)
     private String description;
 
+    @RestForm
     @NotBlank(message = "start-date-time is required")
     private String startDateTime;
 
+    @RestForm
     @NotBlank(message = "end-date-time is required")
     private String endDateTime;
 
+    @RestForm
     private String websiteUrl;
 
-    @NotBlank(message = "image path is required")
-    private String image;
+   // @NotBlank(message = "image path is required")
+    @RestForm
+    private String imageKey;
 
+    @RestForm
     private long attendees;
 
+    @RestForm
     @NotBlank(message = "type is required")
     private String type;
 
-    public String getName() {
-        return name;
+    public String getAccountId() {
+        return accountId;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(String creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getZip() {
-        return zip;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String desciption) {
-        this.description = desciption;
-    }
-
-    public String getStartDateTime() {
-        return startDateTime;
-    }
-
-    public void setStartDateTime(String startDateTime) {
-        this.startDateTime = startDateTime;
-    }
-
-    public String getEndDateTime() {
-        return endDateTime;
-    }
-
-    public void setEndDateTime(String endDateTime) {
-        this.endDateTime = endDateTime;
-    }
-
-    public String getWebsiteUrl() {
-        return websiteUrl;
-    }
-
-    public void setWebsiteUrl(String websiteUrl) {
-        this.websiteUrl = websiteUrl;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     public long getAttendees() {
@@ -153,11 +83,107 @@ public class EventRequestDTO {
         this.attendees = attendees;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getEndDateTime() {
+        return endDateTime;
+    }
+
+    public void setEndDateTime(String endDateTime) {
+        this.endDateTime = endDateTime;
+    }
+
+    public String getImageKey() {
+        return imageKey;
+    }
+
+    public void setImageKey(String imageKey) {
+        this.imageKey = imageKey;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getStartDateTime() {
+        return startDateTime;
+    }
+
+    public void setStartDateTime(String startDateTime) {
+        this.startDateTime = startDateTime;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getWebsiteUrl() {
+        return websiteUrl;
+    }
+
+    public void setWebsiteUrl(String websiteUrl) {
+        this.websiteUrl = websiteUrl;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
     }
 }

@@ -22,7 +22,7 @@ public class EventMapper {
         eventResponseDTO.setStartDateTime(event.getStartDateTime().toString());
         eventResponseDTO.setEndDateTime(event.getEndDateTime().toString());
         eventResponseDTO.setWebsiteUrl(event.getWebsiteUrl());
-        eventResponseDTO.setImage(event.getImage());
+        eventResponseDTO.setImageKey(event.getImageKey());
         eventResponseDTO.setLikes(event.getLikes());
         eventResponseDTO.setRating(event.getRating());
         eventResponseDTO.setAttendees(event.getAttendees());
@@ -33,6 +33,7 @@ public class EventMapper {
 
     public static Event toEvent(EventRequestDTO eventRequestDTO) {
         Event event = new Event();
+        event.setAccountId(eventRequestDTO.getAccountId());
         event.setName(eventRequestDTO.getName());
         event.setCreationDate(LocalDate.parse(eventRequestDTO.getCreationDate()));
         event.setStreet(eventRequestDTO.getStreet());
@@ -44,7 +45,7 @@ public class EventMapper {
         event.setStartDateTime(LocalDateTime.parse(eventRequestDTO.getStartDateTime()));
         event.setEndDateTime(LocalDateTime.parse(eventRequestDTO.getEndDateTime()));
         event.setWebsiteUrl(eventRequestDTO.getWebsiteUrl());
-        event.setImage(eventRequestDTO.getImage());
+        event.setImageKey(eventRequestDTO.getImageKey());
         event.setAttendees(eventRequestDTO.getAttendees());
         event.setType(eventRequestDTO.getType());
         return event;

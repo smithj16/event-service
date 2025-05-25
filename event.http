@@ -6,9 +6,10 @@ GET http://localhost:4002/api/events/a141d8fa-9919-46c0-94b9-9a5bba228504
 
 ### create an event
 POST http://localhost:4002/api/events
-Content-Type: application/json
+Content-Type: multipart/form-data
 
 {
+  "accountId" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
   "name": "Anime Central",
   "creationDate": "2025-10-04",
   "street": "205 Regency Dr",
@@ -20,7 +21,6 @@ Content-Type: application/json
   "startDateTime": "2025-04-25T14:30:00",
   "endDateTime": "2025-04-25T16:30:00",
   "websiteUrl": "www.deeznutz.com",
-  "image": "image.jpn",
   "attendees": 5004754,
   "type": "CONVENTION"
 }
@@ -39,7 +39,7 @@ Content-Type: application/json
   "startDateTime": "2025-04-25T14:30:00",
   "endDateTime": "2025-04-25T16:30:00",
   "websiteUrl": "www.deeznutz.com",
-  "image": "image.jpn",
+  "imageKey": "image.jpn",
   "attendees": 5004754,
   "type": "CONVENTION"
 }
