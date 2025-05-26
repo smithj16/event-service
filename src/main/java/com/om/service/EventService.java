@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 public class EventService {
     @Inject
     EventRepository repo;
+    @Inject
+    EventRepository eventRepository;
 
     public EventService(EventRepository repo) {
         this.repo = repo;
@@ -79,7 +81,7 @@ public class EventService {
         updateEvent.setImageKey(event.getImageKey());
 
         repo.persist(updateEvent);
-        return EventMapper.toEventResponseDTO(updateEvent);
+        return EventMapper.toEventResponseDTO(eventRepository.findById(updateEvent.getId()));
     }
 
     public void deleteEvent(UUID id) {
