@@ -23,7 +23,6 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
 
-import java.io.File;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
