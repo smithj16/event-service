@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Size;
 
 public class EventRequestDTO {
 
+    @NotBlank(groups = {ValidationGroups.Create.class}, message = "account id is required")
+    private String accountId;
+
     @NotBlank(message = "name is required")
     @Size(max = 30, message = "name must be less than 30 characters")
     private String name;
@@ -48,6 +51,14 @@ public class EventRequestDTO {
 
     @NotBlank(message = "type is required")
     private String type;
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
 
     public String getName() {
         return name;

@@ -17,6 +17,8 @@ public class Event extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    private String accountId;
+
     @Column(unique = true)
     private String name;
 
@@ -56,24 +58,25 @@ public class Event extends PanacheEntityBase {
 
     }
 
-    public Event(String name, UUID id, LocalDate creationDate, String street, String city, String state, String zip, String country, String description, LocalDateTime startDateTime, LocalDateTime endDateTime, String websiteUrl, String image, long likes, double rating, long attendees, String type) {
-        this.name = name;
-        this.id = id;
-        this.creationDate = creationDate;
-        this.street = street;
+    public Event(String accountId, long attendees, String city, String country, LocalDate creationDate, String description, LocalDateTime endDateTime, UUID id, String image, long likes, String name, double rating, LocalDateTime startDateTime, String state, String street, String type, String websiteUrl, String zip) {
+        this.accountId = accountId;
+        this.attendees = attendees;
         this.city = city;
-        this.state = state;
-        this.zip = zip;
         this.country = country;
+        this.creationDate = creationDate;
         this.description = description;
-        this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-        this.websiteUrl = websiteUrl;
+        this.id = id;
         this.image = image;
         this.likes = likes;
+        this.name = name;
         this.rating = rating;
-        this.attendees = attendees;
+        this.startDateTime = startDateTime;
+        this.state = state;
+        this.street = street;
         this.type = type;
+        this.websiteUrl = websiteUrl;
+        this.zip = zip;
     }
 
     public UUID getId() {
@@ -82,6 +85,14 @@ public class Event extends PanacheEntityBase {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     public String getName() {
