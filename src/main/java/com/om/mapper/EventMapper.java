@@ -33,6 +33,7 @@ public class EventMapper {
 
     public static Event toEvent(EventRequestDTO eventRequestDTO) {
         Event event = new Event();
+        event.setAccountId(eventRequestDTO.getAccountId());
         event.setName(eventRequestDTO.getName());
         event.setCreationDate(LocalDate.parse(eventRequestDTO.getCreationDate()));
         event.setStreet(eventRequestDTO.getStreet());
