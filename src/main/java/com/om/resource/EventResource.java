@@ -57,11 +57,7 @@ public class EventResource {
                     schema = @Schema(implementation = Event.class)
             ))
     public RestResponse<EventResponseDTO> getEventById(UUID id) {
-        EventResponseDTO event = eventService.getEventById(id);
-        if(event == null)
-            return RestResponse.notFound();
-
-        return RestResponse.ok(event);
+        return RestResponse.ok(eventService.getEventById(id));
     }
 
     @POST
@@ -109,8 +105,10 @@ public class EventResource {
                     schema = @Schema(implementation = Event.class)
             ))
     public RestResponse deleteEvent(UUID id) {
-        eventService.deleteEvent(id);
-        return RestResponse.noContent();
+        if(eventService.deleteEvent(id))
+            return RestResponse.ok();
+
+        return RestResponse.notFound();
     }
 
 
