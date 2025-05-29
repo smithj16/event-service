@@ -65,11 +65,7 @@ public class EventResource {
                     schema = @Schema(implementation = Event.class)
             ))
     public RestResponse<EventResponseDTO> getEventById(UUID id) {
-        EventResponseDTO event = eventService.getEventById(id);
-        if(event == null)
-            return RestResponse.notFound();
-
-        return RestResponse.ok(event);
+        return RestResponse.ok(eventService.getEventById(id));
     }
 
     @POST
@@ -91,13 +87,9 @@ public class EventResource {
                 Log.error("Failed to upload file: " + image.filename);
                 return RestResponse.status(Response.Status.BAD_REQUEST);
             }
+
             newEvent.setImageKey(image.filename);
             EventResponseDTO event = eventService.createEvent(newEvent);
-
-            if (event == null) {
-                Log.warn("Create event failed");
-                return RestResponse.status(Response.Status.BAD_REQUEST);
-            }
 
             Log.info("Create event successful: " + event.getName());
             return RestResponse.created(URI.create("/event/" + event.getId()));
@@ -133,8 +125,10 @@ public class EventResource {
                     schema = @Schema(implementation = Event.class)
             ))
     public RestResponse deleteEvent(UUID id) {
-        eventService.deleteEvent(id);
-        return RestResponse.noContent();
+        if(eventService.deleteEvent(id))
+            return RestResponse.ok();
+
+        return RestResponse.notFound();
     }
 
 

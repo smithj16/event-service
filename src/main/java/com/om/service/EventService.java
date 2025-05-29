@@ -13,6 +13,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -35,12 +36,13 @@ public class EventService {
     }
 
     public EventResponseDTO getEventById(UUID id){
-        Event event = repo.findById(id);
+        Optional<Event> event = repo.findByIdOptional(id);
 
-        if(event == null){
-            throw new NoEventFoundException("Event with id " + id + " not found");
-        }
-        return EventMapper.toEventResponseDTO(event);
+        if(event.isPresent())
+            return EventMapper.toEventResponseDTO(event.get());
+        else
+            throw new NoEventFoundException("No event found with id " + id);
+
     }
 
     public EventResponseDTO createEvent(EventRequestDTO event) {
@@ -54,37 +56,35 @@ public class EventService {
         repo.persist(newEvent);
         Log.info("Created new event: " + newEvent);
 
-        if(!repo.isPersistent(newEvent))
-            return null;
-
         return EventMapper.toEventResponseDTO(repo.findByName(event.getName()));
     }
 
-    public EventResponseDTO updateEvent(UUID id, EventRequestDTO event) {
+    public EventResponseDTO updateEvent(UUID id, EventRequestDTO newEvent) {
         //event must exist
-        Event updateEvent = repo.findById(id);
+        Optional<Event> oldEvent = repo.findByIdOptional(id);
 
-        if(updateEvent == null){
-            throw new NoEventFoundException("Event with id " + id + " not found");
-        }
+        if(!oldEvent.isPresent())
+            throw new NoEventFoundException("No event found with id " + id);
 
-        updateEvent.setName(event.getName());
-        updateEvent.setCity(event.getCity());
-        updateEvent.setCountry(event.getCountry());
-        updateEvent.setState(event.getState());
-        updateEvent.setZip(event.getZip());
-        updateEvent.setStartDateTime(LocalDateTime.parse(event.getStartDateTime()));
-        updateEvent.setEndDateTime(LocalDateTime.parse(event.getEndDateTime()));
-        updateEvent.setDescription(event.getDescription());
-        updateEvent.setWebsiteUrl(event.getWebsiteUrl());
-        updateEvent.setAttendees(event.getAttendees());
-        updateEvent.setImageKey(event.getImageKey());
+        Event updatedEvent = oldEvent.get();
 
-        repo.persist(updateEvent);
-        return EventMapper.toEventResponseDTO(eventRepository.findById(updateEvent.getId()));
+        updatedEvent.setName(newEvent.getName());
+        updatedEvent.setCity(newEvent.getCity());
+        updatedEvent.setCountry(newEvent.getCountry());
+        updatedEvent.setState(newEvent.getState());
+        updatedEvent.setZip(newEvent.getZip());
+        updatedEvent.setStartDateTime(LocalDateTime.parse(newEvent.getStartDateTime()));
+        updatedEvent.setEndDateTime(LocalDateTime.parse(newEvent.getEndDateTime()));
+        updatedEvent.setDescription(newEvent.getDescription());
+        updatedEvent.setWebsiteUrl(newEvent.getWebsiteUrl());
+        updatedEvent.setAttendees(newEvent.getAttendees());
+        updatedEvent.setImageKey(newEvent.getImageKey());
+
+        repo.persist(updatedEvent);
+        return EventMapper.toEventResponseDTO(updatedEvent);
     }
 
-    public void deleteEvent(UUID id) {
-        repo.deleteById(id);
+    public boolean deleteEvent(UUID id) {
+        return repo.deleteById(id);
     }
 }
